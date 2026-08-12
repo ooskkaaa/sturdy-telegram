@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>oliver tree ai video archive</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+    }
+
+    header {
+      padding: 30px 20px;
+      text-align: center;
+      background: #1b1b1b;
+      border-bottom: 2px solid #333;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      color: #aaa;
+      margin-top: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .tab-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #333;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .tab-button:hover {
+      background: #444;
+    }
+
+    .tab-button.active {
+      background: white;
+      color: black;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+      );
+
+      gap: 20px;
+      padding: 25px;
+
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .video-card {
+      background: #1d1d1d;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #333;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      background: black;
+    }
+
+    .video-info {
+      padding: 15px;
+    }
+
+    .video-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .filename {
+      color: #888;
+      font-size: 13px;
+    }
+
+    .empty {
+      text-align: center;
+      color: #777;
+      padding: 50px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+
+    <h1>oliver tree ai video archive</h1>
+
+    <div class="subtitle">
+      duobao / seedance creations
+    </div>
+
+    <div class="tabs">
+
+      <button
+        class="tab-button active"
+        onclick="showTab('videos', this)"
+      >
+        videos
+      </button>
+
+      <button
+        class="tab-button"
+        onclick="showTab('fails', this)"
+      >
+        fails
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- normal videos -->
+
+  <main id="videos" class="video-grid"></main>
+
+
+  <!-- failed videos -->
+
+  <main
+    id="fails"
+    class="video-grid"
+    style="display: none;"
+  ></main>
+
+
+  <script>
+
+    /*
+      =========================
+      NORMAL VIDEOS
+      =========================
+
+      put your video files inside:
+
+      videos/
+
+      then add them here
+    */
+
+    const videoList = [
+
+      {
+        name: "life goes on",
+        file: "life-goes-on.mp4"
+      },
+
+      {
+        name: "funny oliver tree",
+        file: "funny-oliver.mp4"
+      },
+
+      {
+        name: "another video",
+        file: "another-video.mp4"
+      }
+
+    ];
+
+
+    /*
+      =========================
+      FAIL VIDEOS
+      =========================
+
+      failed videos also go inside:
+
+      videos/
+
+      add them here
+    */
+
+    const failList = [
+
+      {
+        name: "oliver gets the wrong haircut",
+        file: "fail-haircut.mp4"
+      },
+
+      {
+        name: "weird camera movement",
+        file: "fail-camera.mp4"
+      },
+
+      {
+        name: "seedance completely loses it",
+        file: "fail-seedance.mp4"
+      }
+
+    ];
+
+
+    /*
+      =========================
+      CREATE VIDEO CARDS
+      =========================
+    */
+
+    function createVideoCard(videoData) {
+
+      const card = document.createElement("div");
+
+      card.className = "video-card";
+
+      card.innerHTML = `
+
+        <video
+          controls
+          preload="metadata"
+        >
+
+          <source
+            src="videos/${videoData.file}"
+            type="video/mp4"
+          >
+
+          your browser doesn't support video playback
+
+        </video>
+
+        <div class="video-info">
+
+          <div class="video-title">
+            ${videoData.name}
+          </div>
+
+          <div class="filename">
+            ${videoData.file}
+          </div>
+
+        </div>
+
+      `;
+
+      return card;
+    }
+
+
+    /*
+      =========================
+      LOAD NORMAL VIDEOS
+      =========================
+    */
+
+    const videosContainer =
+      document.getElementById("videos");
+
+    if (videoList.length === 0) {
+
+      videosContainer.innerHTML = `
+        <div class="empty">
+          no videos yet
+        </div>
+      `;
+
+    } else {
+
+      videoList.forEach(video => {
+
+        videosContainer.appendChild(
+          createVideoCard(video)
+        );
+
+      });
+
+    }
+
+
+    /*
+      =========================
+      LOAD FAILS
+      =========================
+    */
+
+    const failsContainer =
+      document.getElementById("fails");
+
+    if (failList.length === 0) {
+
+      failsContainer.innerHTML = `
+        <div class="empty">
+          no fails yet
+        </div>
+      `;
+
+    } else {
+
+      failList.forEach(fail => {
+
+        failsContainer.appendChild(
+          createVideoCard(fail)
+        );
+
+      });
+
+    }
+
+
+    /*
+      =========================
+      SWITCH TABS
+      =========================
+    */
+
+    function showTab(tab, button) {
+
+      const videos =
+        document.getElementById("videos");
+
+      const fails =
+        document.getElementById("fails");
+
+
+      videos.style.display = "none";
+      fails.style.display = "none";
+
+
+      document
+        .querySelectorAll(".tab-button")
+        .forEach(btn => {
+
+          btn.classList.remove("active");
+
+        });
+
+
+      document.getElementById(tab).style.display = "grid";
+
+
+      button.classList.add("active");
+
+    }
+
+  </script>
+
+</body>
+</html>
